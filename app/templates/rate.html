@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+{% for post in posts %}
+{%if post.completed==1 and post.id==bid%}
+
+{% include '_rate.html' %}
+
+{%endif%}
+{% endfor %}
+
+{% endblock %}

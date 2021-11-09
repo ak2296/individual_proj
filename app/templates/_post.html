@@ -26,14 +26,15 @@
             {%endif %}
         </td>
         <td>
-            {%if post.completed %}
-           
+            {%if post.author.username != current_user.username and post.completed %}
             <div class="row">
-                <div class="col">
-                    {{wtf.quick_form(form2) }}
+                <div class="col-auto">
+                    <a href="{{url_for('rate' , id=post.id)}}"> Rate</a>
                 </div>
             </div>
             {%endif %} 
+            
+            
         </td>
     </tr>
 </table>

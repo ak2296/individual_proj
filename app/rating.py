@@ -6,13 +6,15 @@ from app.forms import EmptyForm, RatingForm
 from app.models import User, Post, Contribute, BookRating, ContributorRate
 from sqlalchemy import func
 
-def post_rating(id):
+def post_rating():
     formR=RatingForm
+    id=Post.id
     post=Post.query.get(id)
-    rating=BookRating(userid=current_user.id, post_id=post.id,rate=formR.rating.data)
-    db.session.add(rating)
-    db.session.commit()
-    flash('Post rated successfully')
+    if formR.validate_on_submit():
+        rating=BookRating(userid=current_user.id, post_id=post.id,rate=formR.rating.data)
+        db.session.add(rating)
+        db.session.commit()
+        flash('Post rated successfully')
 
 def post_average_rating(id):
     post=Post.query.get(id)
