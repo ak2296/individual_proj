@@ -26,9 +26,13 @@
             {%endif %}
         </td>
         <td>
-            
             {%if post.completed %}
-            
+           
+            <div class="row">
+                <div class="col">
+                    {{wtf.quick_form(form2) }}
+                </div>
+            </div>
             {%endif %} 
         </td>
     </tr>
