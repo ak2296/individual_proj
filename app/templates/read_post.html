@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+   
+<table>
+    <tr>
+        <p><strong>Author: </strong>{{ post.author.username.capitalize() }}</p>
+    </tr>
+
+    <tr>
+    {%for cont in conts%}
+        <p><strong>Co-Author  #{{cont.id}}:  </strong> {{ cont.contributor.capitalize()}}</p>
+    {%endfor%}
+
+        </tr>
+            <hr>
+        <tr>
+                <p><strong>Text: </strong> </p>
+                {{post.body | safe}}
+                 <br>
+
+        </tr>
+        <tr>
+            {%for cont in conts%}
+                {%if cont.accepted == 1%}
+                    <p><strong>#{{cont.id}}. {{cont.subtitle}}:  </strong> </p>
+                    {{ cont.body | safe}}
+                {%elif post.user_id == current_user.id and cont.accepted !=1%}
+                    <p><strong>#{{cont.id}}. {{cont.subtitle}}:  </strong> </p>
+
+                    {{ cont.body | safe}}
+                    
+                {%endif%}
+            {%endfor%}
+            <br>
+        </tr>
+</table>
+<hr>
+
+{%if post.user_id == current_user.id and post.completed !=1%}
+<div class="row">
+    <div class="col col-md-2">
+    {{wtf.quick_form(form2)}}
+    </div>
+</div>
+<hr>
+
+<div class="row">
+    <div class="col ">
+{{ wtf.quick_form(form) }}
+    </div>
+</div>
+{%endif%}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<div class="container">
+    <table class="table table-hover ">
+        <tr>
+            <td >
+                <h4>Title:</h4><h5>{{ ref.title.capitalize()}}</h5>
+                <p><h4>So far written:</h4>{{ ref.body |safe}}</p> 
+              
+            </td>
+        </tr>
+        <tr>
+            <td>    
+                {% if form %}
+                {{ wtf.quick_form(form) }}
+                {{ ckeditor.load() }}
+                <br>
+                {% endif %}
+              
+            </td>
+        </tr>
+    </table>
+    </div>
+
+{% endblock %}
