@@ -1,25 +1,28 @@
 from flask import render_template, flash, redirect, url_for, request, g, current_app
 from flask_login import current_user, login_required
+from sqlalchemy.sql.elements import Null
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import EmptyForm, RatingForm
 from app.models import User, Post, Contribute, BookRating, ContributorRate
 from sqlalchemy import func
 
-def post_rating():
-    formR=RatingForm
-    id=Post.id
-    post=Post.query.get(id)
-    if formR.validate_on_submit():
-        rating=BookRating(userid=current_user.id, post_id=post.id,rate=formR.rating.data)
-        db.session.add(rating)
-        db.session.commit()
-        flash('Post rated successfully')
+def post_rating(id):
+    form=RatingForm()
+    posts=BookRating.query.filter_by(post_id=id)
+    for post in posts:
+        if post.userid!=current_user.id:
+            rate= request.args.get('rating')
+            if rate is not Null:
+                rating=BookRating(userid=current_user.id, post_id=id,rate=rate)
+                db.session.add(rating)
+                db.session.commit()
+                flash('Post rated successfully')
 
 def post_average_rating(id):
-    post=Post.query.get(id)
-    book_av_rating= db.session.query(func.avg(BookRating.rate)).filter(BookRating.post_id==post.id).scalar()
-    return round(book_av_rating, 1)
+    book_av_rating= db.session.query(func.avg(BookRating.rate)).filter_by(post_id=id).scalar()
+    if book_av_rating !=None:
+        return round(book_av_rating, 1)
 
 def user_rating(id):
     formR=RatingForm

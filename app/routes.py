@@ -6,7 +6,7 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, SearchForm, EditForm,\
     PostEditForm, CompletedForm, RatingForm, AcceptedForm
 from app.models import User, Post, Contribute, BookRating
-from app.rating import post_rating, post_average_rating, user_rating, user_average_rating
+from app.rating import post_average_rating, post_rating
 from sqlalchemy import func, delete
 
 @app.before_request
@@ -204,7 +204,6 @@ def read_post(id):
     post=Post.query.get(id)
     form2=AcceptedForm()
     form=CompletedForm()
-    formR=RatingForm()
     conts= Contribute.query.filter_by(post_id=post.id)
     
     if form2.validate_on_submit and form2.accept.data==True :
@@ -227,6 +226,7 @@ def read_post(id):
             db.session.delete(rejected)
             db.session.commit()
             flash('the contribution is deleted.','danger')
+            return redirect(url_for('read_post/<id>'))
         else:
             flash('Wrong entry. Choose the right number','danger')
     elif form.validate_on_submit() and current_user.id==post.user_id:
@@ -279,9 +279,6 @@ def completed():
 def rate(id):
     form=RatingForm()
     books=Post.query.order_by(Post.timestamp.desc())
-    if form.validate_on_submit():
-        rating=BookRating(user_id= current_user.id , post_id= id , rate=form.rating.data)
-        db.session.add(rating)
-        db.session.commit()
-        return redirect(url_for('completed'))
+    post_rating(id)
+    form.rating.data=post_average_rating(id)
     return render_template('rate.html', user=user, posts=books, form=form, bid=int(id))

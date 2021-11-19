@@ -39,12 +39,14 @@
 <hr>
 
 {%if post.user_id == current_user.id and post.completed !=1%}
+
 <div class="row">
     <div class="col col-md-2">
     {{wtf.quick_form(form2)}}
     </div>
 </div>
 <hr>
+
 
 <div class="row">
     <div class="col ">
