@@ -9,20 +9,25 @@ from sqlalchemy import func
 
 def post_rating(id):
     form=RatingForm()
-    posts=BookRating.query.filter_by(post_id=id)
-    for post in posts:
-        if post.userid!=current_user.id:
-            rate= request.args.get('rating')
-            if rate is not Null:
-                rating=BookRating(userid=current_user.id, post_id=id,rate=rate)
-                db.session.add(rating)
-                db.session.commit()
-                flash('Post rated successfully')
+    rate= request.args.get('rating')
+    
+    if rate is not None:
+        rating=BookRating(userid=current_user.id, post_id=id,rate=rate)
+        db.session.add(rating)
+        db.session.commit()
+        flash('Post rated successfully')
+    else:
+        pass
 
 def post_average_rating(id):
-    book_av_rating= db.session.query(func.avg(BookRating.rate)).filter_by(post_id=id).scalar()
-    if book_av_rating !=None:
-        return round(book_av_rating, 1)
+    rates=[]
+    book_rating= BookRating.query.filter_by(post_id=id).all()
+    for rate in book_rating:
+        if rate.rate !=None:
+            rates.append(int(rate.rate))
+    book_av_rating= sum(rates)/len(rates)
+    avg= "{:.1f}".format(book_av_rating)
+    return avg
 
 def user_rating(id):
     formR=RatingForm
