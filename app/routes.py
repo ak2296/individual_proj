@@ -280,9 +280,12 @@ def rate(id):
     form=RatingForm()
     books=Post.query.order_by(Post.timestamp.desc())
     rated= BookRating.query.filter_by(userid=current_user.id).all()
-    for r in rated:
-        if not int(r.post_id) == int(id):
-           post_rating(id)
+    if len(rated)<1:
+        post_rating(id)
+    else:
+        for r in rated:
+            if int(r.post_id) != int(id):
+                post_rating(id)
         
     form.rating.data=post_average_rating(id)
     return render_template('rate.html', user=user, posts=books, form=form, bid=int(id))

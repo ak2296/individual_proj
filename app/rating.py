@@ -26,8 +26,8 @@ def post_average_rating(id):
         if rate.rate !=None:
             rates.append(int(rate.rate))
     book_av_rating= sum(rates)/len(rates)
-    avg= "{:.1f}".format(book_av_rating)
-    return avg
+    avg= "{:.0f}".format(book_av_rating)
+    return str(avg)
 
 def user_rating(id):
     formR=RatingForm

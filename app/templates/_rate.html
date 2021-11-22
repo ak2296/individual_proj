@@ -17,22 +17,14 @@
             <td>
                 {%if post.author.username != current_user.username and not post.completed%}
                     <a href="{{ url_for('contribute', id=post.id)}}"> Contribute to the Book </a>
-                
                 {%elif not post.completed %}
                     <a href="{{url_for('edit_post' , id=post.id)}}"> Edit Your Book</a>
-                    
                 {%endif %}
             </td>
             <td>
-                
-                <form class="col" >
-                    
+                <div class="col hstack gap-3" >
                         {{wtf.quick_form(form)}}
-                    
-                </form>
-                
-                
-                
+                </div>
             </td>
         </tr>
     </table>
