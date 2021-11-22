@@ -12,10 +12,8 @@
 ˓→fit=no">
 {% block styles %}
 <!-- Bootstrap CSS -->
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 {% endblock %}
 
 
@@ -26,12 +24,11 @@
 <body>
 
 {% block navbar %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{{ url_for('index') }}">Author-izer</a>
+      <a class="navbar-brand fw-bolder" href="{{ url_for('index') }}">Author-izer</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-        
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -39,19 +36,19 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link " aria-current="page" href="{{ url_for('index') }}">Home</a>
+            <a class="nav-link fw-bolder" aria-current="page" href="{{ url_for('index') }}">Home</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="{{ url_for('explore') }}">All projects</a>
+            <a class="nav-link fw-bolder" href="{{ url_for('explore') }}">All projects</a>
           </li>
         </ul>
         <ul class="navbar-nav  mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link " href="{{ url_for('completed') }}">Completed Projects</a></li>
+            <li class="nav-item"><a class="nav-link fw-bolder" href="{{ url_for('completed') }}">Book Shelf</a></li>
             {% if current_user.is_anonymous %}
-            <li class="nav-item"><a class="nav-link " href="{{ url_for('login') }}">Login</a></li>
+            <li class="nav-item "><a class="nav-link  text-primary " href="{{ url_for('login') }}">Login</a></li>
             {% else %}
-            <li class="nav-item"><a class="nav-link " href="{{ url_for('user', username=current_user.username) }}">Profile</a></li>
-            <li class="nav-item"><a class="nav-link " href="{{ url_for('logout') }}">Logout</a></li>
+            <li class="nav-item "><a class="nav-link fw-bolder" href="{{ url_for('user', username=current_user.username) }}">Profile</a></li>
+            <li class="nav-item "><a class="nav-link text-danger  " href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}
         </ul>
             
@@ -63,7 +60,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="container mt-5">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}

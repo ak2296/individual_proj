@@ -90,7 +90,7 @@ class CompletedForm(FlaskForm):
     submit = SubmitField('Confirm')
 
 class RatingForm(FlaskForm):
-    rating = RadioField(choices=[('1'),('2'), ('3'), ('4'), ('5')], validators=[DataRequired()])
+    rating = RadioField('', choices=[('1'),('2'), ('3'), ('4'), ('5')], validators=[DataRequired()])
     submit = SubmitField('Submit')
 class RemovePost(FlaskForm):
     delete=SubmitField('Delete Post')

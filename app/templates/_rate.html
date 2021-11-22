@@ -22,12 +22,9 @@
                 {%endif %}
             </td>
             <td>
-                <form class="row g-3">
-                    <div class="col-auto" >
-                        {{wtf.render_form(form)}}
-                    </div>
-                </form>
-                
+                <div class="col-auto" id="rate-form">
+                    {{wtf.render_form(form)}}
+                </div>
             </td>
         </tr>
     </table>
