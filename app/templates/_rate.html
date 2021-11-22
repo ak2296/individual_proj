@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container mt-3">
     <table class="table table-hover ">
-        <tr>
+        <tr class="shadow p-3 mb-5 bg-body rounded">
             <td >
                 <a href="{{ url_for('user', username=post.author.username) }}">
                     {{ post.author.username.capitalize() }}
@@ -22,9 +22,12 @@
                 {%endif %}
             </td>
             <td>
-                <div class="col" >
-                        {{wtf.quick_form(form)}}
-                </div>
+                <form class="row g-3">
+                    <div class="col-auto" >
+                        {{wtf.render_form(form)}}
+                    </div>
+                </form>
+                
             </td>
         </tr>
     </table>
