@@ -7,17 +7,14 @@ from app.forms import EmptyForm, RatingForm
 from app.models import User, Post, Contribute, BookRating, ContributorRate
 from sqlalchemy import func
 
-def post_rating(id):
-    form=RatingForm()
-    rate= request.args.get('rating')
-    
+def post_rating(id,rate):
+    print(rate)    
     if rate is not None:
         rating=BookRating(userid=current_user.id, post_id=id,rate=rate)
         db.session.add(rating)
         db.session.commit()
         flash('Post rated successfully')
-    else:
-        pass
+    
 
 def post_average_rating(id):
     rates=[]
@@ -25,9 +22,12 @@ def post_average_rating(id):
     for rate in book_rating:
         if rate.rate !=None:
             rates.append(int(rate.rate))
-    book_av_rating= sum(rates)/len(rates)
-    avg= "{:.0f}".format(book_av_rating)
-    return str(avg)
+    if len(rates)>0:
+        book_av_rating= sum(rates)/len(rates)
+        avg= "{:.0f}".format(book_av_rating)
+        return str(avg)
+    
+        
 
 def user_rating(id):
     formR=RatingForm

@@ -2,12 +2,12 @@
     <table class="table table-hover ">
         <tr class="shadow p-3 mb-5 bg-body rounded">
             <td >
-                <a href="{{ url_for('user', username=post.author.username) }}">
+                <a class= "text-decoration-none" href="{{ url_for('user', username=post.author.username) }}">
                     {{ post.author.username.capitalize() }}
                 </a>
             </td>
             <td>
-                <a href="{{ url_for('read_post', id=post.id) }}">
+                <a class= "text-decoration-none" href="{{ url_for('read_post', id=post.id) }}">
                 {{ post.title.capitalize() }}
                 </a>
             </td>
@@ -16,14 +16,14 @@
             </td>
             <td>
                 {%if post.author.username != current_user.username and not post.completed%}
-                    <a href="{{ url_for('contribute', id=post.id)}}"> Contribute to the Book </a>
+                    <a class= "text-decoration-none" href="{{ url_for('contribute', id=post.id)}}"> Contribute to the Book </a>
                 {%elif not post.completed %}
-                    <a href="{{url_for('edit_post' , id=post.id)}}"> Edit Your Book</a>
+                    <a class= "text-decoration-none" href="{{url_for('edit_post' , id=post.id)}}"> Edit Your Book</a>
                 {%endif %}
             </td>
             <td>
                 <div class="col-auto" id="rate-form">
-                    {{wtf.render_form(form)}}
+                    {{wtf.render_form(form,button_size='sm',button_style='outline-warning rounded-pill mt-0 ')}}
                 </div>
             </td>
         </tr>

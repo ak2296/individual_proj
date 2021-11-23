@@ -1,7 +1,25 @@
 #rate-form .form-group{
     display:inline-block;
 }
+#rate-form .form{
+    margin:0;
+}
 #rate-form .form-check{
     display:inline-block;
+    padding:0;
+    margin:0;
+}
+#rate-form .form-check label{
+   visibility:hidden;
+}
 
+#rate-form .form-check input{
+    margin:0;
+}
+#rate-form .form-check input[type=radio]:checked{
+    background:rgb(252, 210, 24);
+    border: 2px solid rgb(252, 210, 24);
+}
+.btn{
+    margin-top: 10px;
 }

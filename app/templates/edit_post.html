@@ -3,20 +3,16 @@
 
 {% block app_content %}
 <div class="container">
-    <table class="table table-hover ">
-       
-        <tr>
-            <td>    
+
                 {% if form %}
+                <div class="row">
+                    <div class="col">
                 {{ wtf.render_form(form) }}
                 {{ ckeditor.load() }}
-                
-                <br>
+                    </div>
+                </div>
                 {% endif %}
-              
-            </td>
-        </tr>
-    </table>
+
     </div>
 
 {% endblock %}

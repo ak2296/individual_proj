@@ -27,7 +27,7 @@ def index():
                     title=form.title.data, subtitle=form.subtitle.data, completed=form.completed.data)
         db.session.add(post)
         db.session.commit()
-        flash('Your post is now live!','success')
+        flash('Your project is now started!','success')
         return redirect(url_for('index'))
     page = request.args.get('page', 1, type=int)
     posts = current_user.followed_posts().paginate(
@@ -223,9 +223,9 @@ def read_post(id):
             conId.append(con.id)
         if cid in conId:
             rejected=Contribute.query.filter_by(id=cid).first()
-            db.session.delete(rejected)
+            rejected.accepted=2
             db.session.commit()
-            flash('the contribution is deleted.','danger')
+            flash('the contribution is rejected.','danger')
             return redirect(url_for('read_post/<id>'))
         else:
             flash('Wrong entry. Choose the right number','danger')
@@ -280,12 +280,21 @@ def rate(id):
     form=RatingForm()
     books=Post.query.order_by(Post.timestamp.desc())
     rated= BookRating.query.filter_by(userid=current_user.id).all()
-    if len(rated)<1:
-        post_rating(id)
-    else:
-        for r in rated:
-            if int(r.post_id) != int(id):
-                post_rating(id)
+    
+    rid=[]
+    if form.validate_on_submit():
         
+        if len(rated)<1:
+            rate= form.rating.data
+            post_rating(id,rate)
+        else:
+            for r in rated:
+                rid.append(int(r.post_id))
+            if int(id) in rid:
+                flash('You have already rated this book','Warning')
+                
+            else:
+                rate= form.rating.data
+                post_rating(id,rate)
     form.rating.data=post_average_rating(id)
     return render_template('rate.html', user=user, posts=books, form=form, bid=int(id))

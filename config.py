@@ -15,3 +15,6 @@ class Config(object):
     ADMINS = ['your-email@example.com']
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     POSTS_PER_PAGE = 10
+    BOOTSTRAP_BTN_STYLE = 'outline-secondary rounded-pill'
+    
+    

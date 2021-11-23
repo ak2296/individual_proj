@@ -8,6 +8,8 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_ckeditor import CKEditor
 
+
+
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
