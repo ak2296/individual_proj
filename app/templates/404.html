@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-<div class="container">
-    <h1>Are you sure You're looking for the right page? 'cause we got nothing here</h1>
-    <p><a href="{{ url_for('index') }}">Back</a></p>
+<div class="btn-sm rounded-pill btn-outline-light float-start">
+    <a class='text-decoration-none text-danger font-monospace' href="{{ url_for('index') }}"> &larrhk; Back</a>
+</div>
+<div class=" row container">
+    <h1>Ooops! Something went wrong!</h1>
+    <h3>Are you sure You're looking for the right page? 'cause we got nothing here!!</h3>
+
+    <img src="{{ url_for('static', filename='404.png') }}" class="img-fluid" alt="404">
+
 </div>
 {% endblock %}

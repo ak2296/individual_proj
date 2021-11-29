@@ -3,16 +3,21 @@
 
 {% block app_content %}
 <div class="container">
-    <table class="table table-hover ">
+    <div class="btn-sm rounded-pill btn-outline-light float-start">
+        <a class='text-decoration-none text-danger font-monospace' href="{{ url_for('index') }}"> &larrhk; Back</a>
+    </div>
+    <table class=" container table table-hover ">
         <tr>
             <td >
                 <h4>Title:</h4><h5>{{ ref.title.capitalize()}}</h5>
                 <p><h4>So far written:</h4>{{ ref.body |safe}}</p> 
-              
+                
             </td>
         </tr>
+       
         <tr>
-            <td>    
+            <td>  
+                <br>  
                 {% if form %}
                 {{ wtf.render_form(form) }}
                 {{ ckeditor.load() }}

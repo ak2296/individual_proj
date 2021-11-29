@@ -2,9 +2,14 @@
 {% import 'bootstrap/form.html' as wtf %}
 
 {% block app_content %}
+<div class="btn-sm rounded-pill btn-outline-light float-start">
+    <a class='text-decoration-none text-danger font-monospace' href="{{ url_for('user', username=username) }}"> &larrhk; Back</a>
+</div>
+<div class='row'>
     <h1 class="container">Edit Profile</h1>
     {% if form %}
     {{ wtf.render_form(form) }}
     <br>
     {% endif %}
+</div>
 {% endblock %}

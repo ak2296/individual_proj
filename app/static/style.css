@@ -22,4 +22,17 @@
 }
 .btn{
     margin-top: 10px;
+    width:150px;
+}
+#cke_1_top {
+    background-color: rgb(245, 244, 244);
+    border-bottom: none;
+} 
+#cke_1_bottom{
+    background-color: rgb(245, 244, 244);
+    border-top:none;
+}
+
+#cke_post{
+    border-radius: 5px;
 }

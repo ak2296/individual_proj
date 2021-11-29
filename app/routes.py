@@ -6,7 +6,7 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, SearchForm, EditForm,\
     PostEditForm, CompletedForm, RatingForm, AcceptedForm
 from app.models import User, Post, Contribute, BookRating
-from app.rating import post_average_rating, post_rating
+from app.rating import post_average_rating, post_rating, user_rating
 from sqlalchemy import func, delete
 
 @app.before_request
@@ -22,6 +22,7 @@ def before_request():
 @login_required
 def index():
     form = PostForm()
+    authorate= user_rating(current_user.username)
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user, 
                     title=form.title.data, subtitle=form.subtitle.data, completed=form.completed.data)
@@ -38,7 +39,7 @@ def index():
         if posts.has_prev else None
     return render_template('index.html', title='Home', form=form,  
                            posts=posts.items, next_url=next_url,
-                           prev_url=prev_url)
+                           prev_url=prev_url, authorate=authorate)
 
 @app.route('/explore')
 @login_required
@@ -64,7 +65,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Invalid username or password','danger')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -91,7 +92,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -101,6 +102,7 @@ def register():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
+    authorate= user_rating(username)
     posts = user.posts.order_by(Post.timestamp.desc()).paginate(
         page, app.config['POSTS_PER_PAGE'], False)
     next_url = url_for('user', username=user.username, page=posts.next_num) \
@@ -109,7 +111,7 @@ def user(username):
         if posts.has_prev else None
     form = EmptyForm()
     return render_template('user.html', user=user, posts=posts.items,
-                           next_url=next_url, prev_url=prev_url, form=form)
+                           next_url=next_url, prev_url=prev_url, form=form, username=current_user.username,authorate=authorate)
 
 
 
@@ -121,13 +123,13 @@ def edit_profile():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
         db.session.commit()
-        flash('Your changes have been saved.')
+        flash('Your changes have been saved.','info')
         return redirect(url_for('edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile',
-                           form=form)
+                           form=form, username=current_user.username)
 
 @app.route('/follow/<username>', methods=['POST'])
 @login_required
@@ -169,20 +171,7 @@ def unfollow(username):
 
 
 
-@app.route('/search')
-@login_required
-def search():
-    if not g.search_form.validate():
-        return redirect(url_for('explore'))
-    page = request.args.get('page', 1, type=int)
-    posts, total = Post.search(g.search_form.q.data, page,
-                               current_app.config['POSTS_PER_PAGE'])
-    next_url = url_for('main.search', q=g.search_form.q.data, page=page + 1) \
-        if total > page * current_app.config['POSTS_PER_PAGE'] else None
-    prev_url = url_for('main.search', q=g.search_form.q.data, page=page - 1) \
-        if page > 1 else None
-    return render_template('search.html', title=('Search'), posts=posts,
-                           next_url=next_url, prev_url=prev_url)
+
     
     
 @app.route('/contribute/<id>', methods=['GET', 'POST'])
@@ -191,10 +180,10 @@ def contribute(id):
     ref = Post.query.get(id)
     form = EditForm()
     if form.validate_on_submit():
-        contribute = Contribute(body=form.post.data, subtitle=form.subtitle.data, contributor=current_user.username, post_id=id)
+        contribute = Contribute(body=form.post.data, subtitle=form.subtitle.data, user_id=current_user.id, contributor=current_user.username, post_id=id)
         db.session.add(contribute)
         db.session.commit()
-        flash('Your contribution to the text have been saved.')
+        flash('Your contribution to the text have been saved.','success')
         return redirect(url_for('index'))
     return render_template('contribute.html', title='Contribution', user=user,  form=form, id=id , ref=ref)
 
@@ -204,8 +193,8 @@ def read_post(id):
     post=Post.query.get(id)
     form2=AcceptedForm()
     form=CompletedForm()
-    conts= Contribute.query.filter_by(post_id=post.id)
-    
+    conts= Contribute.query.filter_by(post_id=post.id).all()
+    authorate= user_rating(post.author.username)
     if form2.validate_on_submit and form2.accept.data==True :
         cid=form2.contributeId.data
         conId=[]
@@ -236,7 +225,7 @@ def read_post(id):
         return redirect(url_for('index'))
 
     return render_template('read_post.html', user=user, post=post, conts=conts,  form2=form2,
-                           current_user=current_user,   form=form)
+                           current_user=current_user,   form=form, authorate=authorate)
 
 
 
@@ -283,16 +272,14 @@ def rate(id):
     
     rid=[]
     if form.validate_on_submit():
-        
+        for r in rated:
+            rid.append(int(r.post_id))
         if len(rated)<1:
             rate= form.rating.data
             post_rating(id,rate)
         else:
-            for r in rated:
-                rid.append(int(r.post_id))
             if int(id) in rid:
-                flash('You have already rated this book','Warning')
-                
+                flash('You have already rated this book','danger')
             else:
                 rate= form.rating.data
                 post_rating(id,rate)
