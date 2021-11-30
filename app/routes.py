@@ -6,7 +6,7 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, SearchForm, EditForm,\
     PostEditForm, CompletedForm, RatingForm, AcceptedForm
 from app.models import User, Post, Contribute, BookRating
-from app.rating import post_average_rating, post_rating, user_rating
+from app.rating import post_average_rating, post_rating, user_rating, total_rating
 from sqlalchemy import func, delete
 
 @app.before_request
@@ -39,7 +39,7 @@ def index():
         if posts.has_prev else None
     return render_template('index.html', title='Home', form=form,  
                            posts=posts.items, next_url=next_url,
-                           prev_url=prev_url, authorate=authorate)
+                           prev_url=prev_url, authorate=authorate, total=total_rating)
 
 @app.route('/explore')
 @login_required
@@ -111,7 +111,7 @@ def user(username):
         if posts.has_prev else None
     form = EmptyForm()
     return render_template('user.html', user=user, posts=posts.items,
-                           next_url=next_url, prev_url=prev_url, form=form, username=current_user.username,authorate=authorate)
+                           next_url=next_url, prev_url=prev_url, form=form, username=current_user.username,authorate=authorate, total=total_rating)
 
 
 
@@ -141,7 +141,7 @@ def follow(username):
             flash('User {} not found.'.format(username))
             return redirect(url_for('index'))
         if user == current_user:
-            flash('You cannot follow yourself!')
+            flash('You cannot follow yourself!','danger')
             return redirect(url_for('user', username=username))
         current_user.follow(user)
         db.session.commit()
@@ -180,7 +180,7 @@ def contribute(id):
     ref = Post.query.get(id)
     form = EditForm()
     if form.validate_on_submit():
-        contribute = Contribute(body=form.post.data, subtitle=form.subtitle.data, user_id=current_user.id, contributor=current_user.username, post_id=id)
+        contribute = Contribute(body=form.post.data, subtitle=form.subtitle.data, contributor=current_user.username, post_id=id)
         db.session.add(contribute)
         db.session.commit()
         flash('Your contribution to the text have been saved.','success')
@@ -225,7 +225,7 @@ def read_post(id):
         return redirect(url_for('index'))
 
     return render_template('read_post.html', user=user, post=post, conts=conts,  form2=form2,
-                           current_user=current_user,   form=form, authorate=authorate)
+                           current_user=current_user,   form=form, authorate=authorate, user_rating=user_rating, total=total_rating)
 
 
 
@@ -233,6 +233,7 @@ def read_post(id):
 @login_required
 def edit_post(id):
     form = PostEditForm()
+    form2= CompletedForm()
     post=Post.query.get(id)
     if form.validate_on_submit():
         post.title = form.title.data
@@ -241,10 +242,15 @@ def edit_post(id):
         db.session.commit()
         flash('Your changes have been saved.', 'success')
         return redirect(url_for('index'))
+    if form2.validate_on_submit() and current_user.id==post.user_id:
+        post.completed=form2.completed.data
+        db.session.commit()
+        flash('Your project is now published as completed.','seccess')
+        return redirect(url_for('index'))
     form.title.data=post.title
     form.subtitle.data=post.subtitle
     form.body.data=post.body
-    return render_template('edit_post.html', user=user, post=post, form=form, id=id)
+    return render_template('edit_post.html', user=user, post=post, form=form, id=id, form2=form2)
 
 
 

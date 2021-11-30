@@ -3,7 +3,14 @@
 
 {% block app_content %}
    
-        <h1 class='text-success d-inline'>{{ current_user.username.capitalize() }}</h1><span class='badge bg-primary text-wrap d-inline'> {{authorate}} </span>
+        <h1 class='text-success d-inline'>{{ current_user.username.capitalize() }}</h1>
+            {%if authorate >=4%}
+            <span class='badge bg-success text-wrap d-inline'> {{authorate}} of {{total(username=current_user.username)}}</span> 
+            {%elif 4>authorate >=2 %}
+            <span class='badge bg-warning text-wrap d-inline'> {{authorate}} of {{total(username=current_user.username)}}</span> 
+            {%elif authorate<2 %}
+            <span class='badge bg-danger text-wrap d-inline'> {{authorate}} of {{total(username=current_user.username)}} </span> 
+            {%endif%}
 
     {% if form %}
     {{ wtf.render_form(form) }}

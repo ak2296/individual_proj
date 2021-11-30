@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% import 'bootstrap/form.html' as wtf %}
 
+
 {% block app_content %}
+<h2>Edit Your Book</h2>
+
 <div class="btn-sm rounded-pill btn-outline-light float-start">
     <a class='text-decoration-none text-danger font-monospace' href="{{ url_for('index') }}"> &larrhk; Back</a>
 </div>
@@ -10,12 +13,18 @@
                 {% if form %}
                 <div class="row">
                     <div class="col">
-                {{ wtf.render_form(form) }}
+                {{ wtf.render_form(form,button_style="warning rounded-pill float-end") }}
                 {{ ckeditor.load() }}
                     </div>
                 </div>
                 {% endif %}
-
-    </div>
-
+        </div>
+<hr>
+                <div class="row">
+                    <div class="col ">
+                
+                {{ wtf.render_form(form2) }}
+                    </div>
+                </div>
+  
 {% endblock %}

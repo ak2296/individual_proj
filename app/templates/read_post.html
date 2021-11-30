@@ -9,13 +9,28 @@
 <br>
 <div class='container'>
     <table class=" row ">
-        <tr>
-            <p><strong>Author: </strong>{{ post.author.username.capitalize() }} <span class='badge bg-primary text-wrap '> {{authorate}} </span> </p>
+        <tr class='row align-items-center'>
+            <p><strong>Author: </strong>{{ post.author.username.capitalize() }} 
+                {%if authorate >=4%}
+                <span class='badge bg-success text-wrap '> {{authorate}} of {{total(username=post.author.username)}} </span> </p>
+                {%elif 4>authorate >=2 %}
+                <span class='badge bg-warning text-wrap '> {{authorate}} of {{total(username=post.author.username)}}</span> </p>
+                {%elif authorate<2 %}
+                <span class='badge bg-danger text-wrap '> {{authorate}} of {{total(username=post.author.username)}}</span> </p>
+                {%endif%}
         </tr>
 
-        <tr>
+        <tr >
         {%for cont in conts%}
-            <p><strong>Co-Author  #{{cont.id}}:  </strong> {{ cont.user_id.capitalize()}}</p>
+            <p><strong>Co-Author  #{{cont.id}}:  </strong> {{ cont.contributor.capitalize()}} 
+                {%if 4<= user_rating(username=cont.contributor) %}
+                <span class='badge bg-success text-wrap d-inline'> {{user_rating(username=cont.contributor)}} of {{total(username=cont.contributor)}}</span> </p>
+                {%elif 4 > user_rating(username=cont.contributor) >=2 %}
+                <span class='badge bg-warning text-wrap d-inline'> {{user_rating(username=cont.contributor)}} of {{total(username=cont.contributor)}}</span> </p>
+                {%elif user_rating(username=cont.contributor) <2 %}
+                <span class='badge bg-danger text-wrap d-inline'> {{user_rating(username=cont.contributor)}}of {{total(username=cont.contributor)}} </span> </p>
+                {%endif%}
+
         {%endfor%}
 
         </tr>

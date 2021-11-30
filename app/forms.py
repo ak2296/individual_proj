@@ -76,17 +76,17 @@ class SearchForm(FlaskForm):
 class EditForm(FlaskForm):
     subtitle= StringField('Name for your writing/Chapter', validators=[DataRequired()])
     post= CKEditorField('Add to the text', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Save')
     
 class PostEditForm(FlaskForm):
     title= StringField('Name of Project/Book', validators=[DataRequired(), Length(min=1, max=140)])
-    subtitle= StringField('Name for your writing/Chapter', validators=[DataRequired()])
+    subtitle= StringField('Subtitle/Chapter', validators=[DataRequired()])
     body= CKEditorField('Add to the text')
-    submit = SubmitField('Submit')
+    submit = SubmitField('Save')
     
     
 class CompletedForm(FlaskForm):
-    completed=BooleanField("Completed - Check if you don't want any contribution to your project")
+    completed=BooleanField("Completed - Check if you don't want any contribution to your project",validators=[DataRequired()])
     submit = SubmitField('Confirm')
 
 class RatingForm(FlaskForm):

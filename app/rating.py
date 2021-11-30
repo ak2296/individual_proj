@@ -42,6 +42,7 @@ def user_rating(username):
     else:
         return 0
 
-def user_average_rating():
-    user_av_rating= db.session.query(func.avg(ContributorRate.rate)).filter(ContributorRate.contributor==Contribute.contributor).scalar()
-    return round(user_av_rating, 1)
+def total_rating(username):
+   contributes=Contribute.query.filter_by(contributor=username).all()
+   num=len(contributes)
+   return num
