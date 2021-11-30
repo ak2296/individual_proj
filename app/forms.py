@@ -87,7 +87,7 @@ class PostEditForm(FlaskForm):
     
 class CompletedForm(FlaskForm):
     completed=BooleanField("Completed - Check if you don't want any contribution to your project",validators=[DataRequired()])
-    submit = SubmitField('Confirm')
+    submit = SubmitField('Publish Book')
 
 class RatingForm(FlaskForm):
     rating = RadioField('', choices=[('1'),('2'), ('3'), ('4'), ('5')], validators=[DataRequired()])

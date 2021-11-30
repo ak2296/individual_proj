@@ -16,10 +16,7 @@
 #rate-form .form-check input{
     margin:0;
 }
-#rate-form .form-check input[type=radio]:checked{
-    background:rgb(252, 210, 24);
-    border: 2px solid rgb(252, 210, 24);
-}
+
 .btn{
     margin-top: 10px;
     width:150px;
@@ -35,4 +32,25 @@
 
 #cke_post{
     border-radius: 5px;
+}
+#rate-form .form-check #rating-0:checked{
+    background:red;
+    border: 2px solid red;
+}
+#rate-form .form-check #rating-1:checked{
+    background:orange;
+    border: 2px solid orange;
+}
+#rate-form .form-check #rating-2:checked{
+    background:rgb(241, 241, 27);
+    border: 2px solid rgb(241, 241, 27);
+    ;
+}
+#rate-form .form-check #rating-3:checked{
+    background:blue;
+    border: 2px solid blue;
+}
+#rate-form .form-check #rating-4:checked{
+    background:green;
+    border: 2px solid green;
 }
