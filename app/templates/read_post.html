@@ -11,24 +11,24 @@
     <table class=" row ">
         <tr class='row align-items-center'>
             <p><strong>Author: </strong>{{ post.author.username.capitalize() }} 
-                {%if authorate >=4%}
-                <span class='badge bg-success text-wrap '> {{authorate}} of {{total(username=post.author.username)}} </span> </p>
-                {%elif 4>authorate >=2 %}
-                <span class='badge bg-warning text-wrap '> {{authorate}} of {{total(username=post.author.username)}}</span> </p>
-                {%elif authorate<2 %}
-                <span class='badge bg-danger text-wrap '> {{authorate}} of {{total(username=post.author.username)}}</span> </p>
+                {%if authorate >=80%}
+                <span class='badge bg-success text-wrap d-inline'> {{authorate}}% of {{total(username=post.author.username)}}</span> 
+                {%elif 80>authorate >=50 %}
+                <span class='badge bg-warning text-wrap d-inline'> {{authorate}}% of {{total(username=post.author.username)}}</span> 
+                {%elif authorate<50 %}
+                <span class='badge bg-danger text-wrap d-inline'> {{authorate}}% of {{total(username=post.author.username)}} </span> 
                 {%endif%}
         </tr>
 
         <tr >
         {%for cont in conts%}
             <p><strong>Co-Author  #{{cont.id}}:  </strong> {{ cont.contributor.capitalize()}} 
-                {%if 4<= user_rating(username=cont.contributor) %}
-                <span class='badge bg-success text-wrap d-inline'> {{user_rating(username=cont.contributor)}} of {{total(username=cont.contributor)}}</span> </p>
-                {%elif 4 > user_rating(username=cont.contributor) >=2 %}
-                <span class='badge bg-warning text-wrap d-inline'> {{user_rating(username=cont.contributor)}} of {{total(username=cont.contributor)}}</span> </p>
-                {%elif user_rating(username=cont.contributor) <2 %}
-                <span class='badge bg-danger text-wrap d-inline'> {{user_rating(username=cont.contributor)}}of {{total(username=cont.contributor)}} </span> </p>
+                {%if 80<= user_rating(username=cont.contributor) %}
+                <span class='badge bg-success text-wrap d-inline'> {{user_rating(username=cont.contributor)}}% of {{total(username=cont.contributor)}}</span> </p>
+                {%elif 80 > user_rating(username=cont.contributor) >=50 %}
+                <span class='badge bg-warning text-wrap d-inline'> {{user_rating(username=cont.contributor)}}% of {{total(username=cont.contributor)}}</span> </p>
+                {%elif user_rating(username=cont.contributor) <50 %}
+                <span class='badge bg-danger text-wrap d-inline'> {{user_rating(username=cont.contributor)}}% of {{total(username=cont.contributor)}} </span> </p>
                 {%endif%}
 
         {%endfor%}

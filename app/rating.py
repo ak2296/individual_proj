@@ -33,11 +33,11 @@ def user_rating(username):
     contributes=Contribute.query.filter_by(contributor=username).all()
     num=len(contributes)
     for contribute in contributes:
-        if contribute.accepted:
+        if contribute.accepted ==1:
             conts.append(contribute)
     acc_len = len(conts)
     if num>0:
-        rating=(acc_len*5)/num
+        rating=(acc_len*100)/num
         return round(rating,1)
     else:
         return 0

@@ -6,14 +6,13 @@
     <tr>
         <td>
             <h1 class='d-inline'>{{ user.username.capitalize() }}</h1><h3 class='d-inline'>'s Profile Page</h3>
-            {%if authorate >=4%}
-            <span class='badge bg-success text-wrap d-inline'> {{authorate}} of {{total(username=user.username)}}</span> 
-            {%elif 4>authorate >=2 %}
-            <span class='badge bg-warning text-wrap d-inline'> {{authorate}} of {{total(username=user.username)}}</span> 
-            {%elif authorate<2 %}
-            <span class='badge bg-danger text-wrap d-inline'> {{authorate}} of {{total(username=user.username)}}</span> 
+            {%if authorate >=80%}
+            <span class='badge bg-success text-wrap d-inline'> {{authorate}}% of {{total(username=user.username)}}</span> 
+            {%elif 80>authorate >=50 %}
+            <span class='badge bg-warning text-wrap d-inline'> {{authorate}}% of {{total(username=user.username)}}</span> 
+            {%elif authorate<50 %}
+            <span class='badge bg-danger text-wrap d-inline'> {{authorate}}% of {{total(username=user.username)}} </span> 
             {%endif%}
-
             {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
             {% if user.last_seen %}
                     <p>Last seen on: {{ moment(user.last_seen).format('LLL') }}</p>

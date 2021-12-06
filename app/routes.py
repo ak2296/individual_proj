@@ -45,6 +45,7 @@ def index():
 @login_required
 def explore():
     form_2=RatingForm ()
+    authorate= user_rating(current_user.username)
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(
         page, app.config['POSTS_PER_PAGE'], False)
@@ -53,7 +54,7 @@ def explore():
     prev_url = url_for('explore', page=posts.prev_num) \
         if posts.has_prev else None
     return render_template('index.html', title='Open projects', posts=posts.items, form_2=form_2,
-                           next_url=next_url, prev_url=prev_url)
+                           next_url=next_url, prev_url=prev_url,authorate=authorate,total=total_rating)
 
 
 
