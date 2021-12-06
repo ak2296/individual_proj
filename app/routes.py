@@ -194,7 +194,9 @@ def read_post(id):
     post=Post.query.get(id)
     form2=AcceptedForm()
     form=CompletedForm()
+    
     conts= Contribute.query.filter_by(post_id=post.id).all()
+    form2.contributeId.choices=[('')]+[(cont.id) for cont in conts]
     authorate= user_rating(post.author.username)
     if form2.validate_on_submit and form2.accept.data==True :
         cid=form2.contributeId.data
@@ -205,7 +207,7 @@ def read_post(id):
             accepted=Contribute.query.filter_by(id=cid).first()
             accepted.accepted=form2.accept.data
             db.session.commit()
-            flash('The Contribution accepted','seccess')
+            flash('The Contribution accepted','success')
     elif form2.validate_on_submit and form2.reject.data ==True:
         cid=form2.contributeId.data
         conId=[]
@@ -213,16 +215,16 @@ def read_post(id):
             conId.append(con.id)
         if cid in conId:
             rejected=Contribute.query.filter_by(id=cid).first()
-            rejected.accepted=2
+            rejected.accepted=None
             db.session.commit()
             flash('the contribution is rejected.','danger')
-            return redirect(url_for('read_post/<id>'))
+            return redirect(url_for('read_post',id=id))
         else:
             flash('Wrong entry. Choose the right number','danger')
     elif form.validate_on_submit() and current_user.id==post.user_id:
         post.completed=form.completed.data
         db.session.commit()
-        flash('Your project is now published as completed.','seccess')
+        flash('Your project is now published as completed.','success')
         return redirect(url_for('index'))
 
     return render_template('read_post.html', user=user, post=post, conts=conts,  form2=form2,
@@ -236,6 +238,8 @@ def edit_post(id):
     form = PostEditForm()
     form2= CompletedForm()
     post=Post.query.get(id)
+    conts= Contribute.query.filter_by(post_id=post.id).all()
+    add=''.join([('Contributed by ')+(cont.contributor.capitalize()+':')+(cont.body) for cont in conts if cont.accepted !=None])
     if form.validate_on_submit():
         post.title = form.title.data
         post.subtitle = form.subtitle.data
@@ -246,11 +250,11 @@ def edit_post(id):
     if form2.validate_on_submit() and current_user.id==post.user_id:
         post.completed=form2.completed.data
         db.session.commit()
-        flash('Your project is now published as completed.','seccess')
+        flash('Your project is now published as completed.','success')
         return redirect(url_for('index'))
     form.title.data=post.title
     form.subtitle.data=post.subtitle
-    form.body.data=post.body
+    form.body.data=post.body + add
     return render_template('edit_post.html', user=user, post=post, form=form, id=id, form2=form2)
 
 
@@ -259,13 +263,13 @@ def edit_post(id):
 @app.route('/completed')
 def completed():
     
-    books=Post.query.order_by(Post.timestamp.desc())
+    
     page = request.args.get('page', 1, type=int)
-    posts = books.paginate(
+    posts = Post.query.filter_by(completed=1).paginate(
         page, app.config['POSTS_PER_PAGE'], False)
-    next_url = url_for('explore', page=posts.next_num) \
+    next_url = url_for('completed', page=posts.next_num) \
         if posts.has_next else None
-    prev_url = url_for('explore', page=posts.prev_num) \
+    prev_url = url_for('completed', page=posts.prev_num) \
         if posts.has_prev else None
     
     return render_template('completed.html', user=user, posts=posts.items,
@@ -276,19 +280,23 @@ def rate(id):
     form=RatingForm()
     books=Post.query.order_by(Post.timestamp.desc())
     rated= BookRating.query.filter_by(userid=current_user.id).all()
-    
+    bid=int(id)
     rid=[]
-    if form.validate_on_submit():
-        for r in rated:
+    for r in rated:
             rid.append(int(r.post_id))
+    print(rid)
+    if form.validate_on_submit():
+        
         if len(rated)<1:
             rate= form.rating.data
             post_rating(id,rate)
+            
         else:
-            if int(id) in rid:
+            if bid in rid:
                 flash('You have already rated this book','danger')
             else:
                 rate= form.rating.data
                 post_rating(id,rate)
+    
     form.rating.data=post_average_rating(id)
-    return render_template('rate.html', user=user, posts=books, form=form, bid=int(id))
+    return render_template('rate.html', user=user, posts=books, form=form, bid=bid,rid=rid)

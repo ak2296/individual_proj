@@ -1,7 +1,7 @@
 
 {% import "bootstrap/form.html" as wtf %}
 {% from 'bootstrap/form.html' import render_form, render_field, render_form_row %}
-{% from 'bootstrap/utils.html' import render_static, render_messages %}
+{% from 'bootstrap/utils.html' import render_static, render_messages, render_icon %}
 
 
 <html lang="en">
@@ -27,7 +27,7 @@
 {% block navbar %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient">
     <div class="container-fluid">
-      <a class="navbar-brand fw-bolder" href="{{ url_for('index') }}">Author-izer</a>
+      <a class="navbar-brand fw-bolder" href="{{ url_for('index') }}">Author-izer |</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
                     <span class="icon-bar"></span>
@@ -37,19 +37,20 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link fw-bolder" aria-current="page" href="{{ url_for('index') }}">Home</a>
+            <a class="nav-link small " aria-current="page" href="{{ url_for('index') }}"><span>{{ render_icon('house') }}</span> Home</a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link fw-bolder" href="{{ url_for('explore') }}">All projects</a>
+          <li class="nav-item small">
+            <a class="nav-link " href="{{ url_for('explore') }}"><span >{{ render_icon('stack') }}</span> Projects</a>
           </li>
+          <li class="nav-item small"><a class="nav-link" href="{{ url_for('completed') }}"><span>{{ render_icon('book') }}</span> Book Shelf</a></li>
         </ul>
         <ul class="navbar-nav  mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link fw-bolder" href="{{ url_for('completed') }}">Book Shelf</a></li>
+           
             {% if current_user.is_anonymous %}
-            <li class="nav-item "><a class="nav-link  text-primary " href="{{ url_for('login') }}">Login</a></li>
+            <li class="nav-item small"><a class="nav-link  text-primary " href="{{ url_for('login') }}"> <span >{{ render_icon('door-closed') }}</span> Login</a></li>
             {% else %}
-            <li class="nav-item "><a class="nav-link fw-bolder" href="{{ url_for('user', username=current_user.username) }}">Profile</a></li>
-            <li class="nav-item "><a class="nav-link text-danger  " href="{{ url_for('logout') }}">Logout</a></li>
+            <li class="nav-item small"><a class="nav-link " href="{{ url_for('user', username=current_user.username) }}"><span >{{ render_icon('person-fill') }}</span> Profile</a></li>
+            <li class="nav-item small"><a class="nav-link text-danger  " href="{{ url_for('logout') }}"> <span ></span >{{ render_icon('power', color='danger') }} </a></li>
             {% endif %}
         </ul>
             
@@ -62,7 +63,7 @@
 
 {% block content %}
     <div class="container mt-5">
-      {{ render_messages() }}
+      {{ render_messages(dismissible=True) }}
 
         {# application content needs to be provided in the app_content block #}
         {% block app_content %}
@@ -71,6 +72,7 @@
 {% endblock %}
 
 {% block scripts %}
+{{ bootstrap.load_js() }}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='script.js') }}" type="text/javascript"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>

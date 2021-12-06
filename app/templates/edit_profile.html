@@ -2,8 +2,8 @@
 {% import 'bootstrap/form.html' as wtf %}
 
 {% block app_content %}
-<div class="btn-sm rounded-pill btn-outline-light float-start">
-    <a class='text-decoration-none text-danger font-monospace' href="{{ url_for('user', username=username) }}"> &larrhk; Back</a>
+<div>
+    <a class='text-decoration-none text-danger mb-3' href="{{ url_for('user', username=username) }}"> <span>{{ render_icon('arrow-left-circle') }}</span></a>
 </div>
 <div class='row'>
     <h1 class="container">Edit Profile</h1>

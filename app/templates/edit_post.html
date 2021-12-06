@@ -3,13 +3,15 @@
 
 
 {% block app_content %}
-<h2>Edit Your Book</h2>
-
-<div class="btn-sm rounded-pill btn-outline-light float-start">
-    <a class='text-decoration-none text-danger font-monospace' href="{{ url_for('index') }}"> &larrhk; Back</a>
+<div class=" mb-3 d-block">
+    <a class='text-decoration-none text-danger' href="{{ url_for('index') }}"> <span>{{ render_icon('arrow-left-circle') }}</span></a>
 </div>
-<div class="container">
 
+
+
+
+<div class="container ">
+    <h2 class='d-block'>Edit Your Book</h2>
                 {% if form %}
                 <div class="row">
                     <div class="col">
@@ -22,9 +24,8 @@
 <hr>
                 <div class="row">
                     <div class="col ">
-                
                 {{ wtf.render_form(form2) }}
                     </div>
                 </div>
-  
+
 {% endblock %}

@@ -58,7 +58,7 @@ class PostForm(FlaskForm):
     title= StringField('Name of Project', validators=[DataRequired(), Length(min=1, max=140)])
     subtitle= StringField('Subtitle', validators=[Length(min=0, max=200)])
     post = CKEditorField('Write your text', validators=[DataRequired()])
-    completed=BooleanField("Completed - Check if you want your book to publish as done.")
+    completed=BooleanField("Completed - Check if you want your book to publish as completed.")
     submit = SubmitField('Publish')
     
     
@@ -96,6 +96,7 @@ class RemovePost(FlaskForm):
     delete=SubmitField('Delete Post')
     
 class AcceptedForm(FlaskForm):
-    contributeId=IntegerField('Choose contribute ID:', validators=[DataRequired()], default=[])
+    contributeId=SelectField('Choose ID:', validators=[DataRequired()], default=[''])
     accept = SubmitField('Accept')
     reject = SubmitField('Reject')
+

@@ -16,5 +16,5 @@ class Config(object):
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
     POSTS_PER_PAGE = 10
     BOOTSTRAP_BTN_STYLE = 'outline-primary rounded-pill'
-    
+    BOOTSTRAP_ICON_SIZE = '20px'
     

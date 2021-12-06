@@ -4,6 +4,6 @@
 <div class="container">
     <h1>An unexpected error has occurred</h1>
     <p>Sorry for the inconvenience!</p>
-    <p><a href="{{ url_for('index') }}">Back</a></p>
+    <p><a href="{{ url_for('index') }}"><span>{{ render_icon('arrow-left-circle') }}</span></a></p>
 </div>
 {% endblock %}

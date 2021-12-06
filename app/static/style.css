@@ -54,3 +54,20 @@
     background:green;
     border: 2px solid green;
 }
+
+.vertalign{
+    vertical-align: super;
+}
+
+.alert .close{
+    float:right;
+    border: none;
+    background-color: inherit;
+    padding:0;
+    font-size: large;
+}
+
+#contributeId{
+    display:inline;
+    width:25%;
+}
