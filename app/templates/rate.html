@@ -6,7 +6,19 @@
 <div class="row btn-sm rounded-pill btn-outline-light float-start mb-3">
     <a class='text-decoration-none text-danger font-monospace' href="{{ url_for('completed') }}"> <span>{{ render_icon('arrow-left-circle') }}</span></a>
 </div>
-
+<div class='container'>
+    <table class="table">
+        <thead>
+          <tr class='mb-5 bg-body row-cols-5'>
+            <th scope="col-sm-2">Author</th>
+            <th scope="col-sm-2">Title</th>
+            <th scope="col-sm-2">Subtitle</th>
+            <th scope="col-sm-2"> </th>
+            <th scope="col-sm-2"> Rate </th>
+          </tr>
+        </thead>
+    </table>
+    </div>
 {% for post in posts %}
 {%if post.completed==1 and post.id==bid%}
 

@@ -71,3 +71,11 @@
     display:inline;
     width:25%;
 }
+
+#logo{
+   font-family: Moms_typewriter;
+}
+@font-face {
+    font-family:Moms_typewriter ;
+    src: url(Moms_typewriter.ttf);
+}

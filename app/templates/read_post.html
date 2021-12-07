@@ -11,9 +11,10 @@
 </div>
 <br>
 <div class='container'>
-    <table class=" row ">
+    <table class=" tabel ">
         <tr class='row align-items-center'>
-            <p><strong>Author: </strong>{{ post.author.username.capitalize() }} 
+                <p><strong>Author: </strong>{{ post.author.username.capitalize() }}
+
                 {%if authorate >=80%}
                 <span class='badge bg-success text-wrap d-inline'> {{authorate}}% of {{total(username=post.author.username)}}</span> 
                 {%elif 80>authorate >=50 %}
@@ -21,6 +22,7 @@
                 {%elif authorate<50 %}
                 <span class='badge bg-danger text-wrap d-inline'> {{authorate}}% of {{total(username=post.author.username)}} </span> 
                 {%endif%}
+
         </tr>
 
         <tr >
@@ -39,7 +41,7 @@
         </tr>
         <hr>
         <tr>
-            <p><strong>Text: </strong> </p>
+            <p><strong>{{post.subtitle}}: </strong> </p>
             {{post.body | safe}}
         <br>
 
@@ -47,13 +49,13 @@
         <tr>
             {%for cont in conts%}
                 {%if cont.accepted == 1%}
-                    <p><strong>ID: {{cont.id}} &rarr; {{cont.subtitle}}:   </strong> <span>{{ render_icon('check-circle-fill', color='success',size=25) }}</span> </p>
+                    <p><strong>+ ID: {{cont.id}}({{cont.contributor}}) | {{cont.subtitle}}:   </strong> <span>{{ render_icon('check-circle-fill', color='success',size=25) }}</span> </p>
                     {{ cont.body | safe}}
                 {%elif post.user_id == current_user.id and cont.accepted ==None and post.completed !=1%}
-                    <p><strong>ID: {{cont.id}} &rarr; {{cont.subtitle}}:  </strong> <span>{{ render_icon('x-circle-fill', color='danger',size=25) }}</span> </p>
+                <p><strong>+ ID: {{cont.id}}({{cont.contributor}}) | {{cont.subtitle}}:  </strong> <span>{{ render_icon('x-circle-fill', color='danger',size=25) }}</span> </p>
                     {{ cont.body | safe}}
                 {%elif post.user_id == current_user.id and cont.accepted ==0 and post.completed !=1%}  
-                <p><strong>ID: {{cont.id}} &rarr; {{cont.subtitle}}:  </strong> (Waiting...)<span>{{ render_icon('hourglass-split', color='orange', size=25) }}</span> </p>
+                <p><strong>+ ID: {{cont.id}}({{cont.contributor}}) | {{cont.subtitle}}:  </strong> (Waiting...)<span>{{ render_icon('hourglass-split', color='orange', size=25) }}</span> </p>
                     {{ cont.body | safe}}
                     {%endif%}
                 {%endfor%}

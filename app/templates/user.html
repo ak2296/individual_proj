@@ -31,7 +31,7 @@
             <p>
                 <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
                     {{ form.hidden_tag() }}
-                    {{ form.submit(value='Unfollow', class='btn btn-sm rounded-pill btn-primary') }}
+                    {{ form.submit(value='Unfollow', class='btn btn-sm rounded-pill btn-outline-danger') }}
                 </form>
             </p>
             {% endif %}
@@ -39,7 +39,19 @@
     </tr>
         
 </table>
-    <hr>
+<div class='container'>
+    <table class="table">
+        <thead>
+          <tr class='mb-5 bg-body row-cols-5'>
+            <th scope="col-sm-2">Author</th>
+            <th scope="col-sm-2">Title</th>
+            <th scope="col-sm-2">Subtitle</th>
+            <th scope="col-sm-2">Edit/ contribute</th>
+            <th scope="col-sm-2">  </th>
+          </tr>
+        </thead>
+    </table>
+    </div>
     {% for post in posts %}
     {% include '_post.html' %}
 {% endfor %}

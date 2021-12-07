@@ -5,23 +5,27 @@
     <tr class=' shadow p-3 mb-5 bg-body '>
         <td class=" col-sm-2  ">
             <a class= "text-decoration-none" href="{{ url_for('user', username=post.author.username) }}">
+                <span>{{ render_icon('pen') }}</span>
                 {{ post.author.username.capitalize() }}
             </a>
         </td>
         <td class="col-sm-2">
             <a class= "text-decoration-none" href="{{ url_for('read_post', id=post.id) }}">
+                <span>{{ render_icon('card-text') }}</span>
             {{ post.title.capitalize() }}
             </a>
         </td>
         <td class="col-sm-2 ">
             {{ post.subtitle.capitalize() }}
         </td>
-        <td class="col -sm-2">
+        <td class="col-sm-2">
             {%if post.author.username != current_user.username and not post.completed%}
-                <a class= "text-decoration-none" href="{{ url_for('contribute', id=post.id)}}"> Contribute to the Book </a>
+            
+                <a class= "text-decoration-none" href="{{ url_for('contribute', id=post.id)}}"><span>{{ render_icon('pencil-square') }}</span> Contribute to the Book </a>
 
             {%elif not post.completed %}
-                <a class= "text-decoration-none" href="{{url_for('edit_post' , id=post.id)}}"> Edit Your Book</a>
+            
+                <a class= "text-decoration-none" href="{{url_for('edit_post' , id=post.id)}}"><span>{{ render_icon('scissors') }}</span> Edit Your Book</a>
 
             {%endif %}
         </td>
@@ -29,7 +33,7 @@
             {%if post.author.username != current_user.username and post.completed %}
             <div class="row">
                 <div class="col-auto">
-                    <a class= "text-decoration-none" href="{{url_for('rate' , id=post.id)}}"> Rate</a>
+                    <a class= "text-decoration-none" href="{{url_for('rate' , id=post.id)}}"><span>{{ render_icon('star-half') }}</span> Rate</a>
                 </div>
             </div>
             {%endif %}

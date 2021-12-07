@@ -16,13 +16,26 @@
     {{ wtf.render_form(form) }}
     {{ ckeditor.load() }}
     <br>
-    <hr>
     {% endif %}
+    <div class='container'>
+    <table class="table">
+        <thead>
+          <tr class='mb-5 bg-body row-cols-5'>
+            <th scope="col-sm-2">Author</th>
+            <th scope="col-sm-2">Title</th>
+            <th scope="col-sm-2">Subtitle</th>
+            <th scope="col-sm-2">Edit/ contribute</th>
+            <th scope="col-sm-2">  </th>
+          </tr>
+        </thead>
+    </table>
+    </div>
     {% for post in posts %}
         {%if post.completed!=1 %}
         {% include '_post.html' %}
         {%endif%}
     {% endfor %}
+
     <nav aria-label="...">
         <ul class="pager">
             {% if not prev_url %}

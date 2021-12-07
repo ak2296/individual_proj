@@ -3,6 +3,19 @@
 
 {% block app_content %}
 <h3>Book Shelf</h3>
+<div class='container'>
+    <table class="table">
+        <thead>
+          <tr class='mb-5 bg-body row-cols-5'>
+            <th scope="col-sm-2">Author</th>
+            <th scope="col-sm-2">Title</th>
+            <th scope="col-sm-2">Subtitle</th>
+            <th scope="col-sm-2"></th>
+            <th scope="col-sm-2"> Rate </th>
+          </tr>
+        </thead>
+    </table>
+    </div>
 {% for post in posts %}
 {%if post.completed==1 %}
         {% include '_post.html' %}
