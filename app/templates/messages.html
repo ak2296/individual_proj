@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>{{ ('Messages') }}</h1>
+    {% for post in messages %}
+        {% include '_message.html' %}
+    {% endfor %}
+    <nav aria-label="...">
+        <ul class="pager">
+            {% if not prev_url %}
+            <li class='btn-sm rounded-pill btn-outline-light d-inline'>
+                <a type="button" class="btn-outline-light text-decoration-none" href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> {{ ('Newer messages') }}
+                </a>
+            </li>
+            {%elif prev_url%}
+            <li class="btn-sm rounded-pill btn-secondary d-inline">
+                <a type="button" class="btn-outline-light text-decoration-none" href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> {{ ('Newer messages') }}
+                </a>
+            </li>
+            {% endif %}
+            {% if not next_url %}
+            <li  class='btn-sm rounded-pill btn-outline-light d-inline float-end' >
+                <a type="button" class="btn-outline-light text-decoration-none " href="{{ next_url or '#' }}">
+                    {{ ('Older messages') }} <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+            {%elif next_url%}
+            <li  class="btn-sm rounded-pill btn-secondary d-inline float-end ">
+                <a type="button" class="btn-outline-light text-decoration-none " href="{{ next_url or '#' }}">
+                    {{ ('Older messages') }} <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+   
+{% endblock %}

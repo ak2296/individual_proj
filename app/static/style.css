@@ -84,3 +84,7 @@
     height: 30px;
     width: 30px;
 }
+
+#message_count{
+    font-size:8px;
+}
