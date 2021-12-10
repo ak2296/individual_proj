@@ -4,10 +4,12 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, PostForm, SearchForm, EditForm,\
-    PostEditForm, CompletedForm, RatingForm, AcceptedForm
+    PostEditForm, CompletedForm, RatingForm, AcceptedForm, ResetPasswordRequestForm, ResetPasswordForm
 from app.models import User, Post, Contribute, BookRating
 from app.rating import post_average_rating, post_rating, user_rating, total_rating
 from sqlalchemy import func, delete
+from app.email import send_password_reset_email
+
 
 @app.before_request
 def before_request():
@@ -41,17 +43,17 @@ def index():
                            posts=posts.items, next_url=next_url,
                            prev_url=prev_url, authorate=authorate, total=total_rating)
 
-@app.route('/explore')
+@app.route('/projects')
 @login_required
-def explore():
+def projects():
     form_2=RatingForm ()
     authorate= user_rating(current_user.username)
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(
         page, app.config['POSTS_PER_PAGE'], False)
-    next_url = url_for('explore', page=posts.next_num) \
+    next_url = url_for('projects', page=posts.next_num) \
         if posts.has_next else None
-    prev_url = url_for('explore', page=posts.prev_num) \
+    prev_url = url_for('projects', page=posts.prev_num) \
         if posts.has_prev else None
     return render_template('index.html', title='Open projects', posts=posts.items, form_2=form_2,
                            next_url=next_url, prev_url=prev_url,authorate=authorate,total=total_rating)
@@ -120,9 +122,12 @@ def user(username):
 @login_required
 def edit_profile():
     form = EditProfileForm(current_user.username)
+    conts= Contribute.query.filter_by(contributor=current_user.username).all()
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
+        for cont in conts:
+            cont.contributor=form.username.data
         db.session.commit()
         flash('Your changes have been saved.','info')
         return redirect(url_for('edit_profile'))
@@ -286,11 +291,9 @@ def rate(id):
             rid.append(int(r.post_id))
     print(rid)
     if form.validate_on_submit():
-        
         if len(rated)<1:
             rate= form.rating.data
             post_rating(id,rate)
-            
         else:
             if bid in rid:
                 flash('You have already rated this book','danger')
@@ -300,3 +303,35 @@ def rate(id):
     
     form.rating.data=post_average_rating(id)
     return render_template('rate.html', user=user, posts=books, form=form, bid=bid,rid=rid)
+
+
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            send_password_reset_email(user)
+        flash('Check your email for the instructions to reset your password')
+        return redirect(url_for('login'))
+    return render_template('reset_password_request.html',
+                           title='Reset Password', form=form)
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    user = User.verify_reset_password_token(token)
+    if not user:
+        return redirect(url_for('index'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Your password has been reset.')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', form=form)

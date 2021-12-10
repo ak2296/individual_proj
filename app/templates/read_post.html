@@ -16,11 +16,11 @@
                 <p><strong>Author: </strong>{{ post.author.username.capitalize() }}
 
                 {%if authorate >=80%}
-                <span class='badge bg-success text-wrap d-inline'> {{authorate}}% of {{total(username=post.author.username)}}</span> 
+                <span class='badge bg-success text-wrap d-inline rounded-pill'> {{authorate}}% of {{total(username=post.author.username)}}</span> 
                 {%elif 80>authorate >=50 %}
-                <span class='badge bg-warning text-wrap d-inline'> {{authorate}}% of {{total(username=post.author.username)}}</span> 
+                <span class='badge bg-warning text-wrap d-inline rounded-pill'> {{authorate}}% of {{total(username=post.author.username)}}</span> 
                 {%elif authorate<50 %}
-                <span class='badge bg-danger text-wrap d-inline'> {{authorate}}% of {{total(username=post.author.username)}} </span> 
+                <span class='badge bg-danger text-wrap d-inline rounded-pill'> {{authorate}}% of {{total(username=post.author.username)}} </span> 
                 {%endif%}
 
         </tr>

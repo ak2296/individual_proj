@@ -7,7 +7,7 @@ from config import Config
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_ckeditor import CKEditor
-
+from flask_mail import Mail
 
 
 app = Flask(__name__)
@@ -19,6 +19,7 @@ login.login_view = 'login'
 bootstrap = Bootstrap(app)
 ckeditor = CKEditor(app)
 moment = Moment(app)
+mail = Mail(app)
 app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
         if app.config['ELASTICSEARCH_URL'] else None
 

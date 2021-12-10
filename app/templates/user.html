@@ -7,11 +7,11 @@
         <td>
             <h1 class='d-inline'>{{ user.username.capitalize() }}</h1><h3 class='d-inline'>'s Profile Page</h3>
             {%if authorate >=80%}
-            <span class='badge bg-success text-wrap d-inline'> {{authorate}}% of {{total(username=user.username)}}</span> 
+            <span class='badge bg-success text-wrap d-inline rounded-pill'> {{authorate}}% of {{total(username=user.username)}}</span> 
             {%elif 80>authorate >=50 %}
-            <span class='badge bg-warning text-wrap d-inline'> {{authorate}}% of {{total(username=user.username)}}</span> 
+            <span class='badge bg-warning text-wrap d-inline rounded-pill'> {{authorate}}% of {{total(username=user.username)}}</span> 
             {%elif authorate<50 %}
-            <span class='badge bg-danger text-wrap d-inline'> {{authorate}}% of {{total(username=user.username)}} </span> 
+            <span class='badge bg-danger text-wrap d-inline rounded-pill'> {{authorate}}% of {{total(username=user.username)}} </span> 
             {%endif%}
             {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
             {% if user.last_seen %}
@@ -46,7 +46,7 @@
             <th scope="col-sm-2">Author</th>
             <th scope="col-sm-2">Title</th>
             <th scope="col-sm-2">Subtitle</th>
-            <th scope="col-sm-2">Edit/ contribute</th>
+            <th scope="col-sm-2">Options</th>
             <th scope="col-sm-2">  </th>
           </tr>
         </thead>

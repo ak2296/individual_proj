@@ -79,3 +79,8 @@
     font-family:Moms_typewriter ;
     src: url(Moms_typewriter.ttf);
 }
+
+#bookshelf >svg{
+    height: 30px;
+    width: 30px;
+}
