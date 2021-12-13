@@ -184,10 +184,19 @@ def unfollow(username):
 @login_required
 def contribute(id):
     ref = Post.query.get(id)
+    postauth=User.query.filter_by(username=ref.author.username).first_or_404()
     form = EditForm()
+    msgbody='New contribute received for ' + ref.title
+    print(postauth)
+    print(msgbody)
+    print(current_user.id)
     if form.validate_on_submit():
         contribute = Contribute(body=form.post.data, subtitle=form.subtitle.data, contributor=current_user.username, post_id=id)
+        msg = Message(author=current_user, recipient=postauth, body=msgbody)
         db.session.add(contribute)
+        db.session.add(msg)
+        postauth.add_notification('unread_message_count', postauth.new_messages())
+        
         db.session.commit()
         flash('Your contribution to the text have been saved.','success')
         return redirect(url_for('index'))

@@ -23,4 +23,7 @@ mail = Mail(app)
 app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
         if app.config['ELASTICSEARCH_URL'] else None
 
+
+
+
 from app import routes, models, errors

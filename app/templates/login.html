@@ -11,9 +11,9 @@
         </div>
     </div>
     <br>
-    <p>New User? <a href="{{ url_for('register') }}" class='text-danger'>Click to Register!</a></p>
+    <p>New User? <a href="{{ url_for('register') }}" class='btn btn-sm rounded-pill btn-outline-success mt-0'>Click to Register!</a></p>
     <p>
         Forgot Your Password?
-        <a href="{{ url_for('reset_password_request') }}">Click to Reset It</a>
+        <a href="{{ url_for('reset_password_request') }}" class='text-decoration-none text-danger'>Click to Reset It</a>
     </p>
 {% endblock %}

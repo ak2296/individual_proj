@@ -6,25 +6,25 @@
     <a class='text-decoration-none text-danger ' href="{{ url_for('index') }}"> <span>{{ render_icon('arrow-left-circle') }}</span></a>
 </div>
 <div class="container">
-    
+
     <table class=" container table table-hover ">
         <tr>
             <td >
                 <h4>Title:</h4><h5>{{ ref.title.capitalize()}}</h5>
-                <p><h4>So far written:</h4>{{ ref.body |safe}}</p> 
-                
+                <p><h4>So far written:</h4>{{ ref.body |safe}}</p>
+
             </td>
         </tr>
-       
+
         <tr>
-            <td>  
-                <br>  
+            <td>
+                <br>
                 {% if form %}
                 {{ wtf.render_form(form) }}
                 {{ ckeditor.load() }}
                 <br>
                 {% endif %}
-              
+
             </td>
         </tr>
     </table>
