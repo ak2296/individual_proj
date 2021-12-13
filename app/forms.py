@@ -86,7 +86,7 @@ class PostEditForm(FlaskForm):
     
     
 class CompletedForm(FlaskForm):
-    completed=BooleanField("Completed - Check if you don't want any contribution to your project",validators=[DataRequired()])
+    completed=BooleanField("Completed - Check if you don't want any contribution to your project")
     submit = SubmitField('Publish Book')
 
 class RatingForm(FlaskForm):

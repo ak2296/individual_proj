@@ -209,28 +209,19 @@ def read_post(id):
     authorate= user_rating(post.author.username)
     if form2.validate_on_submit and form2.accept.data==True :
         cid=form2.contributeId.data
-        conId=[]
-        for con in conts:
-            conId.append(con.id)
-        if cid in conId:
-            accepted=Contribute.query.filter_by(id=cid).first()
-            accepted.accepted=form2.accept.data
-            db.session.commit()
-            flash('The Contribution accepted','success')
+        accepted=Contribute.query.filter_by(id=cid).first()
+        accepted.accepted=form2.accept.data
+        db.session.commit()
+        flash('The Contribution accepted','success')
     elif form2.validate_on_submit and form2.reject.data ==True:
         cid=form2.contributeId.data
-        conId=[]
-        for con in conts:
-            conId.append(con.id)
-        if cid in conId:
-            rejected=Contribute.query.filter_by(id=cid).first()
-            rejected.accepted=None
-            db.session.commit()
-            flash('the contribution is rejected.','danger')
-            return redirect(url_for('read_post',id=id))
-        else:
-            flash('Wrong entry. Choose the right number','danger')
-    elif form.validate_on_submit() and current_user.id==post.user_id:
+        rejected=Contribute.query.filter_by(id=cid).first()
+        rejected.accepted=None
+        db.session.commit()
+        flash('the contribution is rejected.','danger')
+        return redirect(url_for('read_post',id=id))
+    
+    if form.validate_on_submit() and current_user.id==post.user_id:
         post.completed=form.completed.data
         db.session.commit()
         flash('Your project is now published as completed.','success')
